@@ -134,6 +134,7 @@ export default {
     },
     savePseudo() {
       this.pseudo = this.temporaryPseudo
+      
       this.ws.send(JSON.stringify({ action: "join", data: { pseudo: this.pseudo } }))
     },
     setStatus(status) {
