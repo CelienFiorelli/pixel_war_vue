@@ -25,10 +25,17 @@
     <div class="h-screen items-center flex justify-center ml-8 gap-8">
       <div class="flex flex-col items-center">
         <div v-if="pseudo" class="text-white text-2xl mb-8">{{ pseudo }}</div>
-        <canvas @click="draw" id="canvas" class="border-2 border-blue-600 bg-white" width="800" height="500"></canvas>
+        <div class="relative">
+          <canvas  @mousemove="mouseMove" id="canvas" class="cursor-none border-2 border-blue-600 bg-white" width="800" height="500"></canvas>
+          <div @click="draw" class="absolute cursor-none border border-black" :style="`background-color: ${color}; width: 10.5px; height: 10.5px; top: ${pos.y}px; left: ${pos.x}px;`"></div>
+        </div>
       </div>
 
       <div>
+        <div class="w-full flex justify-center items-center gap-4 mb-8">
+          <img src="icon.png"/>
+          <div class="text-4xl font-semibold text-white">Pixel War</div>
+        </div>
         <div class="flex text-white gap-2 my-2">
           <svg @click="setStatus('edit')" :class="'rounded bg-blue-600 p-2'+ (status == 'edit' ? ' border-2 border-white':'')" width="32" height="32" viewBox="0 0 24 24"
             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +98,8 @@ export default {
       pseudo: null,
       temporaryPseudo: null,
       status: "edit",
-      color: "#f80b"
+      color: "#f80b",
+      pos: {x: null, y: null}
     }
   },
   mounted() {
@@ -114,9 +122,8 @@ export default {
   },
   methods: {
     draw() {
-      const rect = document.getElementById("canvas").getBoundingClientRect()
-      const x = Math.floor((event.clientX - rect.left) / this.pixel) * this.pixel
-      const y = Math.floor((event.clientY - rect.top) / this.pixel) * this.pixel
+      const x = this.pos.x - 1
+      const y = this.pos.y - 1
       const id = `${x}${y}`
 
       const color = this.status == "edit" ? this.color : "white";
@@ -139,8 +146,12 @@ export default {
     },
     setStatus(status) {
       this.status = status
+    },
+    mouseMove(event) {
+      const rect = event.target.getBoundingClientRect();
+      this.pos.x = Math.floor((event.clientX - rect.left) / this.pixel) * this.pixel + 1
+      this.pos.y = Math.floor((event.clientY - rect.top) / this.pixel) * this.pixel + 1
     }
   }
 }
 </script>
-
