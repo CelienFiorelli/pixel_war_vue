@@ -15,7 +15,7 @@ cd back
 npm install
 ```
 ## Database setup
-Add mongodb connection string in `back/config.json`
+Add mongodb connection string in `back/.env`
 
 ```
 node server.js

@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
-const { connectString } = require('./config.json');
+require('dotenv').config();
 const webSocket = require('ws');
 const Pixel = require('./models/pixel');
 
@@ -10,7 +10,7 @@ const app = express()
 const server = http.createServer(app)
 const ws = new webSocket.Server({ server })
 
-mongoose.connect(connectString, {
+mongoose.connect(process.env.CONNECT_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
